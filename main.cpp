@@ -20,5 +20,13 @@ int main()
 
     tab.statistic();
 
+    tab.take_signal(false, true);
+
+    tab.statistic();
+
+    tab.take_signal(true, false);
+
+    tab.statistic();
+
     return 0;
 }

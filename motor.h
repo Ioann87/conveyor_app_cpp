@@ -1,5 +1,6 @@
 #ifndef MOTOR_H
 #define MOTOR_H
+
 #include <requirements.h>
 
 class Motor {

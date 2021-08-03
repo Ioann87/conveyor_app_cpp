@@ -1,7 +1,8 @@
-#ifndef TABLE_H
-#define TABLE_H
 #include <requirements.h>
 
+#ifndef TABLE_H
+#define TABLE_H
+#include <schalter.h>
 class Table {
 private:
     Schalter schal;

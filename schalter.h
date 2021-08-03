@@ -1,7 +1,9 @@
+#include <requirements.h>
+
 #ifndef SCHALTER_H
 #define SCHALTER_H
+
 #include <motor.h>
-#include <requirements.h>
 
 class Schalter {
 
@@ -51,7 +53,6 @@ public:
     void statistic();
     void schalter_on();
     void schalter_off();
-    void take_signal(bool);
     void start_motor(bool);
     void stop_motor();
 

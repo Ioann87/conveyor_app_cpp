@@ -47,15 +47,10 @@ void Schalter::schalter_off()
     return;
 }
 
-void Schalter::take_signal(bool signal)
-{
-    std::cout << "Schal take signal method" << std::endl;
-    return;
-}
-
 void Schalter::start_motor(bool direction)
 {
     set_signal(true);
+    set_direction(direction);
     motor.set_ABC(direction);
     set_U_out(200);
     set_f_out(25);
@@ -69,6 +64,9 @@ void Schalter::start_motor(bool direction)
 
 void Schalter::stop_motor()
 {
+    set_U_out(0);
+    set_f_out(0);
+    set_signal(0);
     motor.stop();
 
     return;

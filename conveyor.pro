@@ -11,6 +11,7 @@ LIBS += -lsfml-system
 
 SOURCES += \
         controller.cpp \
+        conveyor.cpp \
         main.cpp \
         motor.cpp \
         schalter.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     controller.h \
+    conveyor.h \
     motor.h \
     requirements.h \
     schalter.h \

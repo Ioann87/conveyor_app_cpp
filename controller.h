@@ -1,7 +1,9 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include <requirements.h>
+
 #include <table.h>
+
+#include <iostream>
 #include <vector>
 
 class Controler {

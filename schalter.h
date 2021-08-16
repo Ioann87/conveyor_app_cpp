@@ -1,8 +1,7 @@
-#include <requirements.h>
-
 #ifndef SCHALTER_H
 #define SCHALTER_H
 
+#include <iostream>
 #include <motor.h>
 
 class Schalter {

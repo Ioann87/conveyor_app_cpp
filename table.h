@@ -1,15 +1,14 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include <controller.h>
+//#include <controller.h>
 #include <iostream>
 #include <schalter.h>
 
 class Table {
 private:
-    Schalter schal;
-
 public:
+    Schalter schal;
     //graphics
     int x;
     int y;
@@ -52,11 +51,11 @@ public:
         else if (s == 3)
             sprite.setTextureRect(sf::IntRect(0, 200, 100, 50));
         //            sleep(1);
-
+        schal.schalter_on_off(s);
         return;
     }
 
-    void set_schalter(Schalter);
+    void set_schalter(Schalter&);
     Schalter get_schalter();
 
     void move_table();

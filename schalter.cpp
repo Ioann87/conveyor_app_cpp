@@ -98,9 +98,6 @@ bool Schalter::get_signal() { return signal; }
 void Schalter::set_direction(bool direction) { this->direction = direction; }
 bool Schalter::get_direction() { return direction; }
 
-void Schalter::set_motor(Motor motor) { this->motor = motor; }
-Motor Schalter::get_motor() { return motor; }
-
 Schalter& Schalter::operator=(const Schalter& schal)
 {
     this->set_U(schal.U_in);

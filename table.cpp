@@ -43,6 +43,3 @@ void Table::move_table()
 
     return;
 }
-
-void Table::set_schalter(Schalter schal) { this->schal = schal; }
-Schalter Table::get_schalter() { return schal; }

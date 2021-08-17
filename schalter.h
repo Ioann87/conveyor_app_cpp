@@ -20,9 +20,8 @@ private:
 
     bool direction;
 
-    Motor motor;
-
 public:
+    Motor motor;
     //graphics
     int x;
     int y;
@@ -59,6 +58,7 @@ public:
             sprite.setPosition(x, y - 40);
             //            sleep(1);
         }
+        motor.motor_move();
         return;
     }
 
@@ -82,7 +82,7 @@ public:
     void set_direction(bool);
     bool get_direction();
 
-    void set_motor(Motor);
+    void set_motor(Motor&);
     Motor get_motor();
 
     //methods for schalter

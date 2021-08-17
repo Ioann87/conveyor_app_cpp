@@ -1,7 +1,10 @@
 #ifndef CONVEYOR_H
 #define CONVEYOR_H
 
+#include <controller.h>
 #include <motor.h>
+#include <schalter.h>
+#include <table.h>
 
 #include <SFML/Graphics.hpp>
 #include <iostream>

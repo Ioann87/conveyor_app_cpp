@@ -10,6 +10,15 @@ Schalter::Schalter()
     f_out = 0;
     signal = false;
     direction = true;
+
+    //graphic
+    path = "/home/shastiva/c_projects/conveyor/conv_texture.png";
+    image.loadFromFile(path);
+    image.createMaskFromColor(sf::Color(255, 255, 255));
+    texture.loadFromImage(image);
+    sprite.setTexture(texture);
+    sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
+    //    sprite.setOrigin(40 / 2, 40 / 2);
 }
 
 void Schalter::statistic()

@@ -1,6 +1,7 @@
 #ifndef SCHALTER_H
 #define SCHALTER_H
 
+//#include <controller.h>
 #include <iostream>
 #include <motor.h>
 
@@ -22,8 +23,44 @@ private:
     Motor motor;
 
 public:
+    //graphics
+    int x;
+    int y;
+    std::string path;
+    sf::Image image;
+    sf::Texture texture;
+    sf::Sprite sprite;
+
     Schalter();
     ~Schalter() {};
+
+    void set_position(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+        sprite.setPosition(x, y);
+        return;
+    }
+
+    void schalter_on_off(int s)
+    {
+        if (s == 44) {
+            sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
+            sprite.setPosition(x, y);
+        } /*else*/
+        if (s == 1) {
+            //            sleep(1);
+            sprite.setTextureRect(sf::IntRect(280, 100, 20, 40));
+            sprite.setPosition(x + 20, y - 40);
+        }
+        //            sleep(1);
+        else if (s == 2) {
+            sprite.setTextureRect(sf::IntRect(280, 100, 20, 40));
+            sprite.setPosition(x, y - 40);
+            //            sleep(1);
+        }
+        return;
+    }
 
     void set_on(bool);
     bool get_on();
@@ -56,6 +93,7 @@ public:
     void stop_motor();
 
     Schalter& operator=(const Schalter&);
+    //    friend Controler;
 };
 
 #endif // SCHALTER_H

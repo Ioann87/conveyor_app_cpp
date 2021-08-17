@@ -4,7 +4,7 @@ Controler::Controler()
 {
     on = false;
     off = true;
-    tables.reserve(9);
+    tables.reserve(10);
 }
 
 void Controler::set_on(bool on) { this->on = on; }

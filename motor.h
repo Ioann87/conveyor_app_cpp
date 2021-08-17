@@ -1,6 +1,8 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
+//#include <schalter.h>
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -69,6 +71,7 @@ public:
     void statistic();
 
     Motor& operator=(const Motor&);
+    //    friend Schalter;
 };
 
 #endif // MOTOR_H

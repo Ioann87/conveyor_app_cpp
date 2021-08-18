@@ -13,6 +13,10 @@ class Controler {
 private:
     bool on;
     bool off;
+    bool dir_f;
+    bool dir_b;
+    bool run;
+    bool stop;
     //    Table tab;
 protected:
 public:
@@ -27,6 +31,7 @@ public:
     //    sf::Texture texture;
     //    sf::Sprite sprite;
 
+    //buttons classes and graphics
     class ButtonOn {
     public:
         int x;
@@ -44,10 +49,11 @@ public:
             texture.loadFromImage(image);
             sprite_on.setTexture(texture);
             sprite_on.setTextureRect(sf::IntRect(0, 0, 80, 80));
+            sprite_on.setColor(sf::Color(8, 110, 22));
             sprite_on.setPosition(80, 440);
             //    sprite.setOrigin(40 / 2, 40 / 2);
         }
-        //        friend Controler;
+        friend Controler;
     };
     class ButtonOff {
     public:
@@ -69,7 +75,7 @@ public:
             sprite_off.setPosition(200, 440);
             //    sprite.setOrigin(40 / 2, 40 / 2);
         }
-        //        friend Controler;
+        friend Controler;
     };
     class ButtonDirection {
     public:
@@ -91,7 +97,7 @@ public:
             sprite_dir.setPosition(360, 600);
             //    sprite.setOrigin(40 / 2, 40 / 2);
         }
-        //        friend Controler;
+        friend Controler;
     };
     class ButtonRun {
     public:
@@ -114,7 +120,7 @@ public:
             sprite_run.setPosition(360, 440);
             //    sprite.setOrigin(40 / 2, 40 / 2);
         }
-        //        friend Controler;
+        friend Controler;
     };
 
     class ButtonStop {
@@ -138,9 +144,10 @@ public:
             sprite_stop.setPosition(120, 600);
             //    sprite.setOrigin(40 / 2, 40 / 2);
         }
-        //        friend Controler;
+        friend Controler;
     };
 
+    //controllers methods and constructors
     Controler();
     ~Controler() {};
 
@@ -156,6 +163,14 @@ public:
     bool get_on();
     void set_off(bool);
     bool get_off();
+    void set_dir_f(bool);
+    bool get_dir_f();
+    void set_dir_b(bool);
+    bool get_dir_b();
+    void set_run(bool);
+    bool get_run();
+    void set_stop(bool);
+    bool get_stop();
 
     void set_tables(Table&);
     std::vector<Table> get_tables();
@@ -163,8 +178,11 @@ public:
     std::vector<Schalter> get_schalters();
     void set_motor(Motor&);
     std::vector<Motor> get_motors();
-    //    friend ButtonOn;
-    //    ButtonOff, ButtonDirection, ButtonStop;
+
+    friend ButtonOn;
+    friend ButtonOff;
+    friend ButtonDirection;
+    friend ButtonStop;
 };
 
 #endif // CONTROLLER_H

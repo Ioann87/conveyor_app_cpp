@@ -2,6 +2,7 @@
 #define SCHALTER_H
 
 //#include <controller.h>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <motor.h>
 
@@ -29,6 +30,8 @@ public:
     sf::Image image;
     sf::Texture texture;
     sf::Sprite sprite;
+    //    sf::Font font;
+    //    sf::Text text;
 
     Schalter();
     ~Schalter() {};
@@ -38,24 +41,28 @@ public:
         this->x = x;
         this->y = y;
         sprite.setPosition(x, y);
+
         return;
     }
 
-    void schalter_on_off(int s)
+    void schalter_on_off()
     {
-        if (s == 44) {
+        /*if (s == 44) {
             sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
             sprite.setPosition(x, y);
-        } /*else*/
-        if (s == 1) {
+        }*/
+        /*else*/
+        if (direction) {
             //            sleep(1);
             sprite.setTextureRect(sf::IntRect(280, 100, 20, 40));
             sprite.setPosition(x + 20, y - 40);
+            //            text.setString("ABC");
         }
         //            sleep(1);
-        else if (s == 2) {
+        else {
             sprite.setTextureRect(sf::IntRect(280, 100, 20, 40));
             sprite.setPosition(x, y - 40);
+            //            text.setString("ACB");
             //            sleep(1);
         }
         motor.motor_move();

@@ -18,6 +18,15 @@ Schalter::Schalter()
     texture.loadFromImage(image);
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
+
+    //    font.loadFromFile("/home/shastiva/c_projects/conveyor/arial.ttf");
+    //    sf::Text text("ABC", font);
+    //    text.setColor(sf::Color::Red);
+    //    text.setPosition(x + 20, y);
+    //    text.setCharacterSize(12);
+    //    text.setStyle(sf::Text::Bold);
+    //    text.setString("ABC");
+
     //    sprite.setOrigin(40 / 2, 40 / 2);
 }
 
@@ -42,7 +51,15 @@ void Schalter::schalter_on()
     set_off(false);
     set_U(400);
     set_f(50);
+    sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
+    sf::Font font;
+    sf::Text text1("U", font), text2("f", font);
+    text1.setColor(sf::Color::Black);
+    text2.setColor(sf::Color::Black);
+    text1.setPosition(x + 40, y);
+    text2.setPosition(x + 40, y + 20);
 
+    sprite.setPosition(x, y);
     return;
 }
 
@@ -52,7 +69,8 @@ void Schalter::schalter_off()
     set_on(false);
     set_U(0);
     set_f(0);
-
+    sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
+    sprite.setPosition(x, y);
     return;
 }
 

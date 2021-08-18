@@ -24,3 +24,8 @@ HEADERS += \
     requirements.h \
     schalter.h \
     table.h
+
+DISTFILES += \
+    arial.ttf \
+    conv_texture.png \
+    conveyor.png

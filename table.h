@@ -2,6 +2,7 @@
 #define TABLE_H
 
 //#include <controller.h>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <schalter.h>
 
@@ -51,7 +52,7 @@ public:
         else if (s == 3)
             sprite.setTextureRect(sf::IntRect(0, 200, 100, 50));
         //            sleep(1);
-        schal.schalter_on_off(s);
+        schal.schalter_on_off();
         return;
     }
 

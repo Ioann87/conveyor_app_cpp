@@ -17,6 +17,7 @@ protected:
     bool ABC;
     bool on;
     bool off;
+    int rad;
 
 public:
     //graphics
@@ -52,9 +53,9 @@ public:
 
     void motor_move()
     {
-        int rad = 0;
+        rad = 0;
 
-        while (rad != 100) {
+        while (rad != 10) {
 
             sprite.rotate(rad);
             rad += 1;

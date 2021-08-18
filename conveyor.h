@@ -12,6 +12,20 @@
 #include <unistd.h>
 #include <vector>
 
+//#include <controller.h>
+//#include <motor.h>
+//#include <schalter.h>
+//#include <table.h>
+//#include <unistd.h>
+
+//#include <SFML/Graphics.hpp>
+//#include <iostream>
+//#include <string>
+//#include <vector>
+
+//using namespace sf;
+//using namespace std;
+
 class Conveyor {
 public:
     std::string path;

@@ -65,7 +65,7 @@ public:
             //            text.setString("ACB");
             //            sleep(1);
         }
-        motor.motor_move();
+        //        motor.motor_move();
         return;
     }
 

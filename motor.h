@@ -17,7 +17,7 @@ protected:
     bool ABC;
     bool on;
     bool off;
-    int rad;
+    float rad;
 
 public:
     //graphics
@@ -27,6 +27,9 @@ public:
     sf::Image image;
     sf::Texture texture;
     sf::Sprite sprite;
+    //text
+    sf::Font font;
+    sf::Text info;
 
     Motor();
     ~Motor() {};
@@ -51,11 +54,10 @@ public:
         return;
     }
 
-    void motor_move()
+    void motor_move(float rad)
     {
-        rad = 0;
 
-        while (rad != 10) {
+        while (rad != 20) {
 
             sprite.rotate(rad);
             rad += 1;

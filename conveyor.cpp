@@ -75,7 +75,13 @@ void Conveyor::conveyor_on()
     stop.setOutlineColor(sf::Color(255, 17, 0));
     stop.setPosition(120, 600);
 
+    sf::Clock clock;
+
     while (window.isOpen()) {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time /= 800;
+        //        std::cout << time << std::endl;
         //----------------------------------
         sf::Vector2i position = sf::Mouse::getPosition(window);
         //        std::cout << "x=" << position.x << " y=" << position.y << std::endl;
@@ -101,8 +107,10 @@ void Conveyor::conveyor_on()
                     if (controller.get_on())
                         for (size_t i = 0; i < 10; i++) {
                             controller.schalters[i].set_direction(false);
+                            controller.motors[i].set_ABC(false);
                             controller.schalters[i].schalter_on_off();
                             window.draw(controller.schalters[i].sprite);
+                            window.draw(controller.motors[i].info);
                         }
                     window.draw(but_dir.sprite_dir);
                 }
@@ -117,11 +125,13 @@ void Conveyor::conveyor_on()
                     if (controller.get_on()) {
                         for (size_t i = 0; i < 10; i++) {
                             controller.schalters[i].set_direction(true);
+                            controller.motors[i].set_ABC(true);
                             controller.schalters[i].schalter_on_off();
                             window.draw(controller.schalters[i].sprite);
                         }
                     }
                     window.draw(but_dir.sprite_dir);
+                    window.draw(controller.motors[0].info);
                 }
 
         //run
@@ -135,15 +145,30 @@ void Conveyor::conveyor_on()
                         window.draw(but_run.sprite_run);
 
                         for (size_t i = 0; i < 10; i++) {
+                            controller.schalters[i].start_motor(true);
 
-                            controller.motors[i].motor_move();
-                            controller.tables[i].table_move(rand() % 3 + 1);
+                            //                            controller.motors[i].sprite.rotate(10 * time);
 
                             //controller.schalters[i].set_direction(controller.get_dir_b());
                             controller.schalters[i].schalter_on_off();
                         }
                     }
+        if (controller.get_run()) {
+            for (size_t i = 0; i < 10; i++) {
+                if (controller.get_dir_f()) {
+                    controller.motors[i].sprite.rotate(10 * time);
+                    for (size_t j = 0; j < 3; j++) {
+                        controller.tables[i].table_move(j);
+                        if (j == 3)
+                            j = 0;
+                    }
+                } else {
+                    controller.motors[i].sprite.rotate(-10 * time);
+                }
+            }
+        }
 
+        //
         //on / off
         //on
         if (80 <= position.x && position.x <= 160 && 440 <= position.y && position.y <= 520)
@@ -167,6 +192,7 @@ void Conveyor::conveyor_on()
                 if (event.key.code == sf::Mouse::Left) {
                     controller.set_on(false);
                     controller.set_off(true);
+                    controller.set_run(false);
                     for (size_t i = 0; i < 10; i++) {
                         controller.schalters[i].schalter_off();
                         controller.tables[i].table_move(3);
@@ -219,6 +245,7 @@ void Conveyor::conveyor_on()
 
             window.draw(controller.motors[i].sprite);
             window.draw(controller.tables[i].sprite);
+            window.draw(controller.motors[i].info);
         }
 
         window.display();

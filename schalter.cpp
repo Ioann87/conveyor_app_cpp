@@ -52,12 +52,6 @@ void Schalter::schalter_on()
     set_U(400);
     set_f(50);
     sprite.setTextureRect(sf::IntRect(200, 100, 40, 40));
-    sf::Font font;
-    sf::Text text1("U", font), text2("f", font);
-    text1.setColor(sf::Color::Black);
-    text2.setColor(sf::Color::Black);
-    text1.setPosition(x + 40, y);
-    text2.setPosition(x + 40, y + 20);
 
     sprite.setPosition(x, y);
     return;

@@ -17,6 +17,15 @@ Motor::Motor()
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(320, 100, 40, 40));
     sprite.setOrigin(40 / 2, 40 / 2);
+
+    //text
+    //    sf::Font font;
+    font.loadFromFile("/home/shastiva/c_projects/conveyor/arial.ttf");
+    sf::Text info("", font);
+    info.setPosition(x + 20, y - 20);
+    info.setCharacterSize(15);
+    info.setColor(sf::Color::Black);
+    info.setString((ABC ? "ABC" : "ACB"));
 }
 
 void Motor::start(int U, int f, bool direction)

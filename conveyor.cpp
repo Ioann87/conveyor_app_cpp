@@ -75,16 +75,91 @@ void Conveyor::conveyor_on()
     stop.setOutlineColor(sf::Color(255, 17, 0));
     stop.setPosition(120, 600);
 
+    //timer
     sf::Clock clock;
+    float timer = 0;
+    float stop_timer = 0;
 
+    //text
+    sf::Font font;
+    font.loadFromFile("/home/shastiva/c_projects/conveyor/arial.ttf");
+    //info
+    sf::Text info("", font);
+    info.setPosition(x0 + 480, y0 + 360);
+    info.setCharacterSize(30);
+    info.setColor(sf::Color::Black);
+    info.setString("Information: ");
+    //stop
+    sf::Text push_stop("STOP CONVEYOR", font);
+    push_stop.setPosition(x0 + 650, y0 + 340);
+    push_stop.setCharacterSize(50);
+    push_stop.setColor(sf::Color::White);
+    //direction phases
+    sf::Text dir("", font);
+    dir.setPosition(x0 + 480, y0 + 400);
+    dir.setCharacterSize(30);
+    dir.setColor(sf::Color::Black);
+    dir.setString("Phases: ABC");
+    //speed rotation
+    sf::Text speed("", font);
+    speed.setPosition(x0 + 480, y0 + 440);
+    speed.setCharacterSize(30);
+    speed.setColor(sf::Color::Black);
+    speed.setString("RPM: 0");
+    //schalters characteristics
+    sf::Text
+        schal("", font),
+        u_in("", font),
+        f_in("", font),
+        u_out("", font),
+        f_out("", font);
+    //on off
+    schal.setPosition(x0 + 480, y0 + 480);
+    schal.setCharacterSize(30);
+    schal.setColor(sf::Color::Black);
+    schal.setString("Schalter: OFF");
+    //voltage in
+    u_in.setPosition(x0 + 520, y0 + 520);
+    u_in.setCharacterSize(30);
+    u_in.setColor(sf::Color::Black);
+    u_in.setString("U_in(V): 0");
+    //frequence in
+    f_in.setPosition(x0 + 520, y0 + 560);
+    f_in.setCharacterSize(30);
+    f_in.setColor(sf::Color::Black);
+    f_in.setString("f_in(Hz): 0");
+    //voltage out
+    u_out.setPosition(x0 + 520, y0 + 600);
+    u_out.setCharacterSize(30);
+    u_out.setColor(sf::Color::Black);
+    u_out.setString("U_out(V): 0");
+    //frequence out
+    f_out.setPosition(x0 + 520, y0 + 640);
+    f_out.setCharacterSize(30);
+    f_out.setColor(sf::Color::Black);
+    f_out.setString("f_out(Hz): 0");
+
+    //action
     while (window.isOpen()) {
+        //timer
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time /= 800;
+
+        if (controller.get_run())
+            timer += time;
+        else if (controller.get_stop())
+            stop_timer += time;
+        else {
+            timer = 0;
+            stop_timer = 0;
+        }
+
+        std::cout << timer << " : " << stop_timer << std::endl;
+
         //        std::cout << time << std::endl;
         //----------------------------------
         sf::Vector2i position = sf::Mouse::getPosition(window);
-        //        std::cout << "x=" << position.x << " y=" << position.y << std::endl;
 
         sf::Event event;
 
@@ -110,7 +185,7 @@ void Conveyor::conveyor_on()
                             controller.motors[i].set_ABC(false);
                             controller.schalters[i].schalter_on_off();
                             window.draw(controller.schalters[i].sprite);
-                            window.draw(controller.motors[i].info);
+                            //                            window.draw(controller.motors[i].info);
                         }
                     window.draw(but_dir.sprite_dir);
                 }
@@ -131,7 +206,6 @@ void Conveyor::conveyor_on()
                         }
                     }
                     window.draw(but_dir.sprite_dir);
-                    window.draw(controller.motors[0].info);
                 }
 
         //run
@@ -140,31 +214,49 @@ void Conveyor::conveyor_on()
                 if (controller.get_on())
                     if (event.key.code == sf::Mouse::Left) {
                         controller.set_run(true);
-
+                        controller.set_off(false);
+                        controller.set_stop(false);
                         but_run.sprite_run.setTextureRect(sf::IntRect(300, 0, 80, 80));
                         window.draw(but_run.sprite_run);
-
                         for (size_t i = 0; i < 10; i++) {
-                            controller.schalters[i].start_motor(true);
-
-                            //                            controller.motors[i].sprite.rotate(10 * time);
-
-                            //controller.schalters[i].set_direction(controller.get_dir_b());
+                            controller.schalters[i].start_motor(controller.get_dir_f());
                             controller.schalters[i].schalter_on_off();
                         }
+                        push_stop.setColor(sf::Color::White);
                     }
+
         if (controller.get_run()) {
-            for (size_t i = 0; i < 10; i++) {
-                if (controller.get_dir_f()) {
-                    controller.motors[i].sprite.rotate(10 * time);
-                    for (size_t j = 0; j < 3; j++) {
-                        controller.tables[i].table_move(j);
-                        if (j == 3)
-                            j = 0;
+            if (timer < 3000) {
+                for (size_t i = 0; i < 10; i++) {
+                    if (controller.get_dir_f()) {
+                        dir.setString("Phases: ABC");
+                        controller.motors[i].sprite.rotate(1);
+                        controller.tables[i].table_move(1);
+                    } else if (controller.get_dir_b()) {
+                        dir.setString("Phases: ACB");
+                        controller.motors[i].sprite.rotate(-1);
+                        controller.tables[i].table_move(1);
                     }
-                } else {
-                    controller.motors[i].sprite.rotate(-10 * time);
                 }
+                speed.setString("RPM: 1500");
+                u_out.setString("U_out(V): 200");
+                f_out.setString("f_out(Hz): 25");
+            } else {
+                for (size_t i = 0; i < 10; i++) {
+                    if (controller.get_dir_f()) {
+                        dir.setString("Phases: ABC");
+                        controller.motors[i].sprite.rotate(5);
+                        controller.tables[i].table_move(2);
+
+                    } else if (controller.get_dir_b()) {
+                        dir.setString("Phases: ACB");
+                        controller.motors[i].sprite.rotate(-5);
+                        controller.tables[i].table_move(2);
+                    }
+                }
+                speed.setString("RPM: 3000");
+                u_out.setString("U_out(V): 400");
+                f_out.setString("f_out(Hz): 50");
             }
         }
 
@@ -176,7 +268,6 @@ void Conveyor::conveyor_on()
                 if (event.key.code == sf::Mouse::Left) {
                     controller.set_on(true);
                     controller.set_off(false);
-
                     for (size_t i = 0; i < 10; i++) {
                         controller.schalters[i].schalter_on();
                     }
@@ -185,11 +276,17 @@ void Conveyor::conveyor_on()
 
                     window.draw(but_on.sprite_on);
                     window.draw(but_off.sprite_off);
+                    schal.setString("Schalter: ON");
+                    u_in.setString("U_in(V): 400");
+                    f_in.setString("f_in(Hz): 50");
+                    u_out.setString("U_out(V): 0");
+                    f_out.setString("f_out(Hz): 0");
                 }
         //off
         if (200 <= position.x && position.x <= 280 && 440 <= position.y && position.y <= 520)
             if (event.type == sf::Event::MouseButtonPressed)
                 if (event.key.code == sf::Mouse::Left) {
+
                     controller.set_on(false);
                     controller.set_off(true);
                     controller.set_run(false);
@@ -203,22 +300,79 @@ void Conveyor::conveyor_on()
 
                     window.draw(but_on.sprite_on);
                     window.draw(but_off.sprite_off);
+                    schal.setString("Schalter: OFF");
+                    u_in.setString("U_in(V): 0");
+                    f_in.setString("f_in(Hz): 0");
+                    u_out.setString("U_out(V): 0");
+                    f_out.setString("f_out(Hz): 0");
                 }
+        if (controller.get_off()) {
+
+            timer += time;
+            if (timer < 2000) {
+                for (size_t i = 0; i < 10; i++) {
+                    controller.motors[i].sprite.rotate(1);
+                    controller.tables[i].table_move(1);
+                }
+                speed.setString("RPM: 1500");
+                u_in.setString("U_in(V): 400");
+                f_in.setString("f_in(Hz): 50");
+                u_out.setString("U_out(V): 200");
+                f_out.setString("f_out(Hz): 25");
+            } else {
+                for (size_t i = 0; i < 10; i++) {
+                    controller.tables[i].table_move(3);
+                    controller.motors[i].sprite.rotate(0);
+                }
+                speed.setString("RPM: 0");
+                u_in.setString("U_in(V): 0");
+                f_in.setString("f_in(Hz): 0");
+                u_out.setString("U_out(V): 0");
+                f_out.setString("f_out(Hz): 0");
+            }
+        }
+
+        //        if (controller.get_off()) {
+        //            if (timer < 3000)
+        //                for (size_t i = 0; i < 10; i++) {
+
+        //                    if (controller.get_dir_f()) {
+        //                        controller.motors[i].sprite.rotate(10 * time);
+
+        //                        controller.tables[i].table_move(2);
+
+        //                    } else {
+        //                        controller.motors[i].sprite.rotate(-1 * time);
+        //                    }
+        //                }
+        //            else
+        //                for (size_t i = 0; i < 10; i++) {
+        //                    if (controller.get_dir_f()) {
+        //                        controller.motors[i].sprite.rotate(1 * time);
+
+        //                        controller.tables[i].table_move(1);
+
+        //                    } else {
+        //                        controller.motors[i].sprite.rotate(-10 * time);
+        //                    }
+        //                }
+        //        }
 
         //stop
         if (80 <= position.x && position.x <= 160 && 560 <= position.y && position.y <= 640)
             if (event.type == sf::Event::MouseButtonPressed)
                 if (event.key.code == sf::Mouse::Left) {
+                    timer = 0;
                     controller.set_stop(true);
-                    controller.set_on(false);
-                    controller.set_off(true);
+                    controller.set_on(true);
+                    controller.set_off(false);
 
                     controller.set_run(false);
                     controller.set_dir_b(false);
                     controller.set_dir_f(true);
 
-                    but_on.sprite_on.setColor(sf::Color(8, 110, 22));
-                    but_off.sprite_off.setColor(sf::Color(252, 11, 7));
+                    //                    but_on.sprite_on.setColor(sf::Color(8, 110, 22));
+                    //                    but_off.sprite_off.setColor(sf::Color(252, 11, 7));
                     but_run.sprite_run.setTextureRect(sf::IntRect(200, 0, 80, 80));
                     but_dir.sprite_dir.setPosition(360, 600);
 
@@ -231,7 +385,70 @@ void Conveyor::conveyor_on()
                     window.draw(but_run.sprite_run);
                     for (size_t i = 0; i < 10; i++)
                         controller.tables[i].table_move(3);
+                    schal.setString("Schalter: ON");
+                    push_stop.setColor(sf::Color::Red);
+
+                    //                    u_in.setString("U_in(V): 0");
+                    //                    f_in.setString("f_in(Hz): 0");
+                    //                    u_out.setString("U_out(V): 0");
+                    //                    f_out.setString("f_out(Hz): 0");
                 }
+
+        if (controller.get_stop()) {
+            stop_timer += time;
+            if (timer < 2000) {
+                for (size_t i = 0; i < 10; i++) {
+                    controller.motors[i].sprite.rotate(1);
+                    controller.tables[i].table_move(1);
+                    speed.setString("RPM: 1500");
+                    u_in.setString("U_in(V): 400");
+                    f_in.setString("f_in(Hz): 50");
+                    u_out.setString("U_out(V): 200");
+                    f_out.setString("f_out(Hz): 25");
+                }
+            } else {
+                for (size_t i = 0; i < 10; i++) {
+                    controller.tables[i].table_move(3);
+                    speed.setString("RPM: 0");
+                    u_in.setString("U_in(V): 400");
+                    f_in.setString("f_in(Hz): 50");
+                    u_out.setString("U_out(V): 0");
+                    f_out.setString("f_out(Hz): 0");
+                    controller.motors[i].sprite.rotate(0);
+                }
+            }
+        }
+        //        if (controller.get_stop()) {
+
+        //            if (timer < 3000)
+        //                for (size_t i = 0; i < 10; i++) {
+
+        //                    if (controller.get_dir_f()) {
+        //                        controller.motors[i].sprite.rotate(10 * time);
+
+        //                        controller.tables[i].table_move(2);
+
+        //                    } else {
+        //                        controller.motors[i].sprite.rotate(-10 * time);
+        //                    }
+        //                }
+
+        //            else if (timer < 4000)
+        //                for (size_t i = 0; i < 10; i++) {
+        //                    if (controller.get_dir_f()) {
+        //                        controller.motors[i].sprite.rotate(1 * time);
+
+        //                        controller.tables[i].table_move(1);
+
+        //                    } else {
+        //                        controller.motors[i].sprite.rotate(-10 * time);
+        //                        controller.tables[i].table_move(3);
+        //                    }
+        //                }
+        //            else
+        //                for (size_t i = 0; i < 10; i++)
+        //                    window.draw(controller.motors[i].sprite);
+        //        }
 
         //motor rotation
 
@@ -242,12 +459,18 @@ void Conveyor::conveyor_on()
         window.draw(but_run.sprite_run);
         for (size_t i = 0; i < 10; i++) {
             window.draw(controller.schalters[i].sprite);
-
             window.draw(controller.motors[i].sprite);
             window.draw(controller.tables[i].sprite);
-            window.draw(controller.motors[i].info);
         }
-
+        window.draw(info);
+        window.draw(push_stop);
+        window.draw(dir);
+        window.draw(speed);
+        window.draw(schal);
+        window.draw(u_in);
+        window.draw(f_in);
+        window.draw(u_out);
+        window.draw(f_out);
         window.display();
     }
 }

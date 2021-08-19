@@ -24,7 +24,7 @@ Motor::Motor()
     sf::Text info("", font);
     info.setPosition(x + 20, y - 20);
     info.setCharacterSize(15);
-    info.setColor(sf::Color::Black);
+    //    info.setColor(sf::Color::Black);
     info.setString((ABC ? "ABC" : "ACB"));
 }
 

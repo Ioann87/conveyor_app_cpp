@@ -17,6 +17,7 @@ private:
     bool dir_b;
     bool run;
     bool stop;
+    float timer;
     //    Table tab;
 protected:
 public:
@@ -171,6 +172,8 @@ public:
     bool get_run();
     void set_stop(bool);
     bool get_stop();
+    void set_timer(float);
+    float get_timer();
 
     void set_tables(Table&);
     std::vector<Table> get_tables();

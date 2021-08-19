@@ -8,6 +8,7 @@ Controler::Controler()
     dir_b = false;
     run = false;
     stop = false;
+    timer = 0;
     tables.reserve(10);
     schalters.reserve(10);
     motors.reserve(10);
@@ -25,6 +26,8 @@ void Controler::set_run(bool run) { this->run = run; }
 bool Controler::get_run() { return run; }
 void Controler::set_stop(bool stop) { this->stop = stop; }
 bool Controler::get_stop() { return stop; }
+void Controler::set_timer(float time) { this->timer = time; }
+float Controler::get_timer() { return timer; }
 
 void Controler::set_tables(Table& tab) { tables.push_back(tab); }
 std::vector<Table> Controler::get_tables() { return tables; }
